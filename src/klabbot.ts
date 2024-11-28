@@ -14,7 +14,6 @@ class KLabBot {
     console.log(`[${now.toISOString()}] ${message}`);
   }
 
-
   constructor(bot: Bot) {
     this.bot = bot;
   }

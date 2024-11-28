@@ -10,16 +10,22 @@ interface SlashCommand {
 const BotToken: string = Deno.env.get("BOT_TOKEN")!;
 const HelloCommand: SlashCommand = {
     info: {
-        name: "hello_world",
-        description: "こんにちはと返します。"
+        name: "about",
+        description: "このBotについて"
     },
-
     response: async (bot, interaction) => {
         return await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
             type: InteractionResponseTypes.ChannelMessageWithSource,
             data: {
-                content: "こんにちは",
-
+                embeds: [
+                    {
+                        author: {
+                            name: "KLabBot",
+                        },
+                        color: 0x00ff00,
+                        description: "KLabBotはDenoのDiscordenoモジュールを使って作られたBotです。",
+                    }
+                ],
                 flags: 1 << 6
             }
         });
