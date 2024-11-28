@@ -1,6 +1,6 @@
-import { createBot, getBotIdFromToken, startBot, Intents, CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes } from "@discordeno/mod.ts";
+import { CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes } from "@discordeno/mod.ts";
 import "$std/dotenv/load.ts"
-
+import { KLabBot } from "./src/klabbot.ts";
 function log(message: string) {
     const now = new Date();
     console.log(`[${now.toISOString()}] ${message}`);
@@ -13,7 +13,6 @@ interface SlashCommand {
 
 const BotToken: string = Deno.env.get("BOT_TOKEN")!;
 const HelloCommand: SlashCommand = {
-
     info: {
         name: "hello_world",
         description: "こんにちはと返します。"
@@ -31,25 +30,8 @@ const HelloCommand: SlashCommand = {
     }
 }
 
-const bot = createBot({
-    token: BotToken,
-    botId: getBotIdFromToken(BotToken) as bigint,
-    intents: Intents.Guilds | Intents.GuildMessages,
-    events: {
-
-        ready: (_bot, payload) => {
-            log(`${payload.user.username} is ready!`);
-        },
-        interactionCreate: async (_bot, interaction) => {
-            await HelloCommand.response(bot, interaction);
-        }
-    }
-});
-
-bot.helpers.createGlobalApplicationCommand(HelloCommand.info);
-bot.helpers.upsertGlobalApplicationCommands([HelloCommand.info]);
-
-await startBot(bot);
+const klabbot = KLabBot.createBot(BotToken, [HelloCommand]);
+klabbot.start();
 
 Deno.cron("Continuous Request", "*/2 * * * *", () => {
     log("running...");
