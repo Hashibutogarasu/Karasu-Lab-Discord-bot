@@ -27,14 +27,10 @@ const HelloCommand: SlashCommand = {
     }
 }
 
-
 const bot = createBot({
     token: BotToken,
     botId: getBotIdFromToken(BotToken) as bigint,
-
     intents: Intents.Guilds | Intents.GuildMessages,
-
-
     events: {
 
         ready: (_bot, payload) => {
@@ -46,12 +42,8 @@ const bot = createBot({
     }
 });
 
-
 bot.helpers.createGlobalApplicationCommand(HelloCommand.info);
-
-
 bot.helpers.upsertGlobalApplicationCommands([HelloCommand.info]);
-
 
 await startBot(bot);
 
