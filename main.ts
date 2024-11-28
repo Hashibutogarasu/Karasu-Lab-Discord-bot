@@ -1,6 +1,15 @@
 import { createBot, getBotIdFromToken, startBot, Intents, CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes } from "@discordeno/mod.ts";
+import log4js from "npm:log4js";
 
 import "$std/dotenv/load.ts"
+
+log4js.configure({
+    appenders: { bot: { type: "file", filename: "bot.log" } },
+    categories: { default: { appenders: ["bot"], level: "error" } },
+});
+
+const logger = log4js.getLogger();
+logger.level = "debug";
 
 interface SlashCommand {
     info: CreateSlashApplicationCommand;
@@ -34,7 +43,7 @@ const bot = createBot({
     events: {
 
         ready: (_bot, payload) => {
-            console.log(`${payload.user.username} is ready!`);
+            logger.debug(`${payload.user.username} is ready!`);
         },
         interactionCreate: async (_bot, interaction) => {
             await HelloCommand.response(bot, interaction);
@@ -48,5 +57,5 @@ bot.helpers.upsertGlobalApplicationCommands([HelloCommand.info]);
 await startBot(bot);
 
 Deno.cron("Continuous Request", "*/2 * * * *", () => {
-    console.log("running...");
+    logger.debug("running...");
 });
