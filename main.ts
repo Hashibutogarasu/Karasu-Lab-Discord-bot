@@ -1,19 +1,9 @@
 import { createBot, getBotIdFromToken, startBot, Intents, CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes } from "@discordeno/mod.ts";
-import log4js from "npm:log4js";
-
 import "$std/dotenv/load.ts"
 
-log4js.configure({
-    appenders: { bot: { type: "file", filename: "bot.log" } },
-    categories: { default: { appenders: ["bot"], level: "error" } },
-});
-
-const logger = log4js.getLogger();
-logger.level = "debug";
-
 function log(message: string) {
-    logger.debug(message);
-    console.log(message);
+    const now = new Date();
+    console.log(`[${now.toISOString()}] ${message}`);
 }
 
 interface SlashCommand {
