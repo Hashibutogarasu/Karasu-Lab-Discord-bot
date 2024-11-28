@@ -35,7 +35,13 @@ class KLabBot {
             await post(
               WebHookURL,
               {
-                content: content,
+                embeds: [
+                  {
+                    title: "KLabBot",
+                    description: content,
+                    color: 2326507,
+                  }
+                ]
               },
             );
           }
