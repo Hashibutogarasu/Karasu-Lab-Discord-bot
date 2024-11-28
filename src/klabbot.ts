@@ -9,6 +9,12 @@ export interface SlashCommand {
 class KLabBot {
   private bot: Bot;
 
+  public static log(message: string) {
+    const now = new Date();
+    console.log(`[${now.toISOString()}] ${message}`);
+  }
+
+
   constructor(bot: Bot) {
     this.bot = bot;
   }
@@ -20,7 +26,7 @@ class KLabBot {
       intents: Intents.Guilds | Intents.GuildMessages,
       events: {
         ready: (_bot, payload) => {
-          console.log(`${payload.user.username} is ready!`);
+          KLabBot.log(`${payload.user.username} is ready!`);
         },
         interactionCreate: async (_bot, interaction) => {
           for (const command of commands.values()) {

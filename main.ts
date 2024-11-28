@@ -1,10 +1,6 @@
 import { CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes } from "@discordeno/mod.ts";
 import "$std/dotenv/load.ts"
 import { KLabBot } from "./src/klabbot.ts";
-function log(message: string) {
-    const now = new Date();
-    console.log(`[${now.toISOString()}] ${message}`);
-}
 
 interface SlashCommand {
     info: CreateSlashApplicationCommand;
@@ -34,5 +30,5 @@ const klabbot = KLabBot.createBot(BotToken, [HelloCommand]);
 klabbot.start();
 
 Deno.cron("Continuous Request", "*/2 * * * *", () => {
-    log("running...");
+    KLabBot.log("running...");
 });
