@@ -11,6 +11,11 @@ log4js.configure({
 const logger = log4js.getLogger();
 logger.level = "debug";
 
+function log(message: string) {
+    logger.debug(message);
+    console.log(message);
+}
+
 interface SlashCommand {
     info: CreateSlashApplicationCommand;
     response(bot: Bot, interaction: Interaction): Promise<void>;
@@ -43,7 +48,7 @@ const bot = createBot({
     events: {
 
         ready: (_bot, payload) => {
-            logger.debug(`${payload.user.username} is ready!`);
+            log(`${payload.user.username} is ready!`);
         },
         interactionCreate: async (_bot, interaction) => {
             await HelloCommand.response(bot, interaction);
@@ -57,5 +62,5 @@ bot.helpers.upsertGlobalApplicationCommands([HelloCommand.info]);
 await startBot(bot);
 
 Deno.cron("Continuous Request", "*/2 * * * *", () => {
-    logger.debug("running...");
+    log("running...");
 });
