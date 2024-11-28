@@ -52,7 +52,12 @@ const GeminiCommand: SlashCommand = {
         const gemini = GeminiAPI.createClient(GeminiAPIKey);
         const input = interaction.data?.options?.filter(option => option.name === "text")[0].value as string;
 
-        await bot.helpers.startTyping(interaction.channelId!);
+        try{
+            await bot.helpers.startTyping(interaction.channelId!);
+        }
+        catch(error){
+            console.error(error);
+        }
 
         const content = await gemini.generateContent(input);
 
