@@ -1,10 +1,13 @@
 import { createBot, getBotIdFromToken, startBot, Intents, CreateSlashApplicationCommand, Bot, Interaction } from "@discordeno/mod.ts";
+import { post } from "https://deno.land/x/dishooks@v1.1.0/mod.ts";
+import "$std/dotenv/load.ts"
+
+const WebHookURL: string = Deno.env.get("WEBHOOK_URL")!;
 
 export interface SlashCommand {
   info: CreateSlashApplicationCommand;
   response(bot: Bot, interaction: Interaction): Promise<void>;
 };
-
 
 class KLabBot {
   private bot: Bot;
@@ -24,8 +27,21 @@ class KLabBot {
       botId: getBotIdFromToken(BotToken) as bigint,
       intents: Intents.Guilds | Intents.GuildMessages,
       events: {
-        ready: (_bot, payload) => {
-          KLabBot.log(`${payload.user.username} is ready!`);
+        ready: async (_bot, payload) => {
+          const content = `${payload.user.username} is ready!`;
+          KLabBot.log(content);
+
+          try {
+            await post(
+              WebHookURL,
+              {
+                content: content,
+              },
+            );
+          }
+          catch (error) {
+            console.error(error);
+          }
         },
         interactionCreate: async (_bot, interaction) => {
           for (const command of commands.values()) {
