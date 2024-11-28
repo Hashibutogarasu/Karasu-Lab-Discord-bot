@@ -61,8 +61,9 @@ class KLabBot {
 
     for (const command of commands) {
       bot.helpers.createGlobalApplicationCommand(command.info);
-      bot.helpers.upsertGlobalApplicationCommands([command.info]);
     }
+
+    bot.helpers.upsertGlobalApplicationCommands(commands.map(command => command.info));
 
     return new KLabBot(bot);
   }
