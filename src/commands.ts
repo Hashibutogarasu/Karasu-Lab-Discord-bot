@@ -119,3 +119,7 @@ export const UploadCommand: SlashCommand = {
     }) as void;
   }
 }
+
+const commands: SlashCommand[] = [GeminiCommand, AboutCommand, UploadCommand];
+
+export default commands;
