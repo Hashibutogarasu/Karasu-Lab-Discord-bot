@@ -1,16 +1,12 @@
 import { CreateSlashApplicationCommand, Bot, Interaction, InteractionResponseTypes, ApplicationCommandTypes } from "@discordeno/mod.ts";
-import "$std/dotenv/load.ts"
 import { GeminiAPI } from "./gemini.ts";
-import "$std/dotenv/load.ts"
 import { getFileFromUrl, getFileNamefromUrl, putImage } from "./upload.ts";
+import Environments from "./keys.ts";
 
 interface SlashCommand {
   info: CreateSlashApplicationCommand;
   response(bot: Bot, interaction: Interaction): Promise<void>;
 };
-
-
-const GeminiAPIKey: string = Deno.env.get("GEMINI_API_KEY")!;
 
 export const GeminiCommand: SlashCommand = {
   info: {
@@ -26,7 +22,7 @@ export const GeminiCommand: SlashCommand = {
     ]
   },
   response: async (bot, interaction) => {
-    const gemini = GeminiAPI.createClient(GeminiAPIKey);
+    const gemini = GeminiAPI.createClient(Environments.GEMINI_API_KEY);
     const input = interaction.data?.options?.filter(option => option.name === "text")[0].value as string;
 
     const content = await gemini.generateContent(input);
@@ -101,7 +97,6 @@ export const UploadCommand: SlashCommand = {
       return url;
     });
 
-    //url is [object Promise] so we need to await it
     const url = urls ? await Promise.all(urls) : [];
 
     return await bot.helpers.editOriginalInteractionResponse(interaction.token, {

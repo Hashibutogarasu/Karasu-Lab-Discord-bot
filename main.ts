@@ -1,10 +1,8 @@
-import "$std/dotenv/load.ts"
 import { KLabBot } from "./src/klabbot.ts";
 import commands from "./src/commands.ts";
+import Environments from "./src/keys.ts";
 
-const BotToken: string = Deno.env.get("BOT_TOKEN")!;
-
-const klabbot = KLabBot.createBot(BotToken, commands);
+const klabbot = KLabBot.createBot(Environments.BOT_TOKEN, commands);
 klabbot.start();
 
 Deno.cron("Continuous Request", "*/2 * * * *", () => {

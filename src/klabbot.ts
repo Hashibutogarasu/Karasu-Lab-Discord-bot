@@ -1,8 +1,6 @@
 import { createBot, getBotIdFromToken, startBot, Intents, CreateSlashApplicationCommand, Bot, Interaction } from "@discordeno/mod.ts";
 import { post } from "https://deno.land/x/dishooks@v1.1.0/mod.ts";
-import "$std/dotenv/load.ts"
-
-const WebHookURL: string = Deno.env.get("WEBHOOK_URL")!;
+import Environments from "./keys.ts";
 
 export interface SlashCommand {
   info: CreateSlashApplicationCommand;
@@ -33,7 +31,7 @@ class KLabBot {
 
           try {
             await post(
-              WebHookURL,
+              Environments.WEBHOOK_URL,
               {
                 embeds: [
                   {

@@ -5,13 +5,14 @@ import {
   DeleteObjectCommand,
   DeleteObjectCommandInput,
 } from 'npm:@aws-sdk/client-s3'
+import Environments from "./keys.ts";
 
 const client = new S3Client({
   region: 'auto',
-  endpoint: Deno.env.get('CLOUDFLARE_ENDPOINT') as string,
+  endpoint: Environments.CLOUDFLARE_ENDPOINT,
   credentials: {
-    accessKeyId: Deno.env.get('CLOUDFLARE_ACCESS_KEY_ID') as string,
-    secretAccessKey: Deno.env.get('CLOUDFLARE_ACCESS_KEY') as string,
+    accessKeyId: Environments.CLOUDFLARE_ACCESS_KEY_ID,
+    secretAccessKey: Environments.CLOUDFLARE_ACCESS_KEY,
   },
 });
 
@@ -47,7 +48,7 @@ export const putImage = async (file: ArrayBuffer, pathname: string, contentType:
   const command = new PutObjectCommand(uploadParams);
   await client.send(command);
 
-  return `${Deno.env.get('IMAGE_HOST_URL')}/${pathname}`;
+  return `${Environments.IMAGE_HOST_URL}/${pathname}`;
 };
 
 export const deleteImage = (pathname: string) => {
